@@ -1,6 +1,7 @@
 messages:
   # telegram messages
   general-message-to-mc: "&c[Telegram]&r %s: %s"
+  general-message-to-discord: "[Telegram to Discord] %s: %s"
   join-message: "`%s joined the game.`"
   quit-message: "`%s left the game.`"
   death-message: "`%s`"

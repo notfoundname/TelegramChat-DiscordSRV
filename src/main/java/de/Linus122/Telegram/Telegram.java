@@ -142,16 +142,17 @@ public class Telegram {
 		} else if (TelegramChat.getBackend().getLinkedChats().containsKey(user_id)) {
 			ChatMessageToMc chatMsg = new ChatMessageToMc(
 					TelegramChat.getBackend().getUUIDFromUserID(user_id), text, chat.getId());
-			
+
 			for (TelegramActionListener actionListener : listeners) {
 				actionListener.onSendToMinecraft(chatMsg);
 			}
-			
+
 			if(!chatMsg.isCancelled()){
 				boolean skipFirstMessages = TelegramChat.getInstance().getConfig().getBoolean("omit-messages-sent-while-server-was-offline");
-				
+
 				if(!(skipFirstMessages && firstUpdate)) {
-					TelegramChat.sendToMC(chatMsg);		
+					TelegramChat.sendToMC(chatMsg);
+					TelegramChat.sendToDiscord(chatMsg);
 				} else {
 					TelegramChat.getInstance().getLogger().info("Omitted message Telegram->MC because it was sent while the server was offline.");
 				}

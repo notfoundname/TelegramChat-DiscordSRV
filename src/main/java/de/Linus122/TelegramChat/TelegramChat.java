@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 import de.Linus122.Handlers.VanishHandler;
 import de.myzelyam.api.vanish.VanishAPI;
+import github.scarsz.discordsrv.DiscordSRV;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -152,6 +154,10 @@ public class TelegramChat extends JavaPlugin implements Listener {
 		sendToMC(chatMsg.getUuid_sender(), chatMsg.getContent(), chatMsg.getChatID_sender());
 	}
 
+	public static void sendToDiscord(ChatMessageToMc chatMsg) {
+		sendToDiscord(chatMsg.getUuid_sender(), chatMsg.getContent(), chatMsg.getChatID_sender());
+	}
+
 	private static void sendToMC(UUID uuid, String msg, long sender_chat) {
 		OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
 		List<Long> recievers = new ArrayList<Long>();
@@ -165,6 +171,19 @@ public class TelegramChat extends JavaPlugin implements Listener {
 
 	}
 
+	private static void sendToDiscord(UUID uuid, String msg, long sender_chat) {
+		OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+		List<Long> recievers = new ArrayList<Long>();
+		recievers.addAll(TelegramChat.data.chat_ids);
+		recievers.remove((Object) sender_chat);
+		String msgF = Utils.formatMSG("general-message-to-discord", op.getName(), msg)[0];
+		for (long id : recievers) {
+			telegramHook.sendMsg(id, msgF.replaceAll("§.", ""));
+		}
+		TextChannel textChannel = DiscordSRV.getPlugin().getMainTextChannel();
+		textChannel.sendMessage(msgF);
+	}
+
 	public static void link(UUID player, long userID) {
 		TelegramChat.data.addChatPlayerLink(userID, player);
 		OfflinePlayer p = Bukkit.getOfflinePlayer(player);
@@ -172,10 +191,10 @@ public class TelegramChat extends JavaPlugin implements Listener {
 	}
 	
 	public boolean isChatLinked(Chat chat) {
-		if(TelegramChat.getBackend().getLinkedChats().containsKey(chat.getId())) {
+		if (TelegramChat.getBackend().getLinkedChats().containsKey(chat.getId())) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
