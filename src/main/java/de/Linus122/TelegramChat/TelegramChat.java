@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import de.Linus122.Handlers.VanishHandler;
 import de.myzelyam.api.vanish.VanishAPI;
 import github.scarsz.discordsrv.DiscordSRV;
-import net.dv8tion.jda.api.entities.TextChannel;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
