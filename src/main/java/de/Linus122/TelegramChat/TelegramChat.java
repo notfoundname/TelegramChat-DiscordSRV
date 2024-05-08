@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import de.Linus122.Handlers.VanishHandler;
 import de.myzelyam.api.vanish.VanishAPI;
 import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.emoji.EmojiParser;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -308,9 +309,10 @@ public class TelegramChat extends JavaPlugin implements Listener {
 		if (telegramHook.connected) {
 			ChatMessageToTelegram chat = new ChatMessageToTelegram();
 			chat.parse_mode = "Markdown";
-			chat.text = Utils
+			chat.text = EmojiParser.parseToUnicode(Utils
 					.escape(Utils.formatMSG("general-message-to-telegram", e.getPlayer().getName(), e.getMessage())[0])
-					.replaceAll("§.", "");
+					.replaceAll("§.", "")
+					.replaceAll("\uF801", ""));
 			telegramHook.sendAll(chat);
 		}
 	}
