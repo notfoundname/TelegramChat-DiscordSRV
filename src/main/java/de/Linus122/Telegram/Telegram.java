@@ -224,7 +224,9 @@ public class Telegram {
 			reader.close();
 		} catch (Exception e) {
 			reconnect();
-			TelegramChat.getInstance().getLogger().info("Disconnected from Telegram, reconnect...");
+			if (TelegramChat.getInstance().getConfig().getBoolean("debug")) {
+				TelegramChat.getInstance().getLogger().info("Disconnected from Telegram, reconnect...");
+			}
 		}
 
 	}
