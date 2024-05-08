@@ -54,12 +54,16 @@ public class Telegram {
 		try {
 			JsonObject obj = sendGet(String.format(API_URL_GETME, token));
 			authJson = obj;
-			TelegramChat.getInstance().getLogger().info("Established a connection with the telegram servers.");
+			if (TelegramChat.getInstance().getConfig().getBoolean("debug")) {
+				TelegramChat.getInstance().getLogger().info("Established a connection with the telegram servers.");
+			}
 			connected = true;
 			return true;
 		} catch (Exception e) {
 			connected = false;
-			TelegramChat.getInstance().getLogger().warning("Sorry, but could not connect to Telegram servers. The token could be wrong.");
+			if (TelegramChat.getInstance().getConfig().getBoolean("debug")) {
+				TelegramChat.getInstance().getLogger().warning("Sorry, but could not connect to Telegram servers. The token could be wrong.");
+			}
 			return false;
 		}
 	}
